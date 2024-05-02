@@ -24,7 +24,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.vestfriend_123_a3"
-    compileSdkVersion flutter.compileSdkVersion
+    //compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -61,7 +62,7 @@ android {
         }
     }
 
-    compileSdkVersion 34//point 1
+
 }
 
 flutter {
@@ -70,4 +71,5 @@ flutter {
 
 dependencies {}
 
-    apply plugin: 'com.google.gms.google-services'
+    //apply plugin: 'com.google.gms.google-services'
+    //원본에선 있었는데 추가하니 에러남, 근데 꼭 필요한게 아니라면 빌드 그레들은 최대한 순정을 유지하는편이 향후 더 좋긴 합니다

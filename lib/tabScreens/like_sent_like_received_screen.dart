@@ -179,10 +179,7 @@ class _LikeSentLikeReceivedScreenState
               child: Card(
                 color: Colors.blue.shade200,
                 child: GestureDetector(
-                  onTap: ()
-                  {
-
-
+                  onTap: (){
                   },
                   child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -240,8 +237,6 @@ class _LikeSentLikeReceivedScreenState
                                 ),
                               ],
                             ),
-
-
                           ],
                         ),
                       ),

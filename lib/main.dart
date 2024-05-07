@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:vestfriend_123_a3/authenticationScreen/login_screen.dart';
 import 'package:vestfriend_123_a3/controllers/authentication_controller.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vestfriend_123_a3/controllers/profile-controller.dart';
 import 'package:vestfriend_123_a3/global.dart';
 import 'package:vestfriend_123_a3/tabScreens/user_details_screen.dart';
@@ -18,6 +21,48 @@ class _SwippingScreenState extends State<SwippingScreen>
   ProfileController profileController = Get.put(ProfileController());
   String senderName = "";
 
+  startChattingInWhatsApp(String receiverPhoneNumber) async
+  {
+
+    var androidUrl = "whatsapp://send?phone=$receiverPhoneNumber&text=Hi, I found your profile on dating app.";
+    var iosUrl = "https://wa.me/$receiverPhoneNumber?text=${Uri.parse('Hi, I found your profile on dating app.')}";
+
+    try
+    {
+      //Whatsapp 가져오는 코딩
+      if(Platform.isIOS)
+      {
+        await launchUrl((Uri.parse(iosUrl)));
+      }
+      else
+      {
+        await launchUrl((Uri.parse(androidUrl)));
+      }
+    }
+    on Exception
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context)
+          {
+            return AlertDialog(
+              title: const Text("Whatsapp Not Found"),
+              content: const Text("Whatsapp is not installed"),
+              actions: [
+                TextButton(
+                  onPressed: ()
+                  {
+                    Get.back();
+                  },
+                  child: const Text("Ok"),
+                ),
+              ],
+            );
+          }
+      );
+    }
+  }
+
   applyFilter()
   {
     showDialog(
@@ -25,7 +70,7 @@ class _SwippingScreenState extends State<SwippingScreen>
       builder: (BuildContext context)
         {
           return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setSetter)
+            builder: (BuildContext context, StateSetter setState)
                 {
                   return AlertDialog(
                     title: const Text(
@@ -36,9 +81,118 @@ class _SwippingScreenState extends State<SwippingScreen>
                       children: [
 
                         const Text("I am looking for a:"),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DropdownButton<String>(
+                            hint: const Text('Select gender'),
+                            value: chosenGender,
+                            underline: Container(),
+                              items: [
+                                'Male',
+                                'Female',
+                                'Others'
+                              ].map((value)
+                              {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                );
+                              }).toList(),
+                            onChanged: (String? value)
+                            {
+                              setState(() {
+                                chosenGender = value;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+
+                        const Text("who lives in:"),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DropdownButton<String>(
+                            hint: const Text('Select country'),
+                            value: chosenCountry,
+                            underline: Container(),
+                            items: [
+                              'Korea',
+                              'Vietnam',
+                              'Japan',
+                              'China',
+                              'USA',
+                              'Philippines',
+                            ].map((value)
+                            {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? value)
+                            {
+                              setState(() {
+                                chosenCountry = value;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+
+                        const Text("who's age is equal to or above:"),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DropdownButton<String>(
+                            hint: const Text('Select age'),
+                            value: chosenAge,
+                            underline: Container(),
+                            items: [
+                              '20',
+                              '25',
+                              '30',
+                              '35',
+                              '40',
+                              '45',
+                            ].map((value)
+                            {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? value)
+                            {
+                              setState(() {
+                                chosenAge = value;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
 
                       ],
                     ),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: ()
+                        {
+                          Get.back();
+
+                          profileController.getResults();
+                        },
+                        child: const Text("Done"),
+                      ),
+                    ],
+                    
                   );
                 },
           );
@@ -91,20 +245,21 @@ class _SwippingScreenState extends State<SwippingScreen>
                     fit: BoxFit.cover,
                   )
               ),
+
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   children: [
-
                     //Filter Icon Button
                     Align(
                       alignment: Alignment.topRight,
                       child: Padding(
                           padding: const EdgeInsets.only(top: 8),
-                          child: IconButton(
+                          child:
+                          IconButton(
                             onPressed: ()
                             {
-
+                              applyFilter();
                             },
                             icon: const Icon(
                               Icons.filter_list,
@@ -113,6 +268,9 @@ class _SwippingScreenState extends State<SwippingScreen>
                           ),
                       ),
                     ),
+
+
+
                     const Spacer(),
 
                     //User Data
@@ -288,7 +446,7 @@ class _SwippingScreenState extends State<SwippingScreen>
                         GestureDetector(
                           onTap: ()
                           {
-
+                            startChattingInWhatsApp(eachProfileInfo.phoneNo.toString());
                           },
                           child: Image.asset(
                             "images/mobile.png",

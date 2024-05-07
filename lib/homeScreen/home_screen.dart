@@ -101,6 +101,14 @@ class _HomeScreenState extends State<HomeScreen>
               label: ""
           ),
 
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.chat,
+                size: 30,
+              ),
+              label: ""
+          ),
+
         ],
       ),
       body: tabScreensList[screenIndex],

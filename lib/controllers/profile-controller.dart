@@ -9,28 +9,58 @@ import 'package:http/http.dart' as http;
 
 class ProfileController extends GetxController {
   final Rx<List<Person>> usersProfileList = Rx<List<Person>>([]);
-
   List<Person> get allUsersProfileList => usersProfileList.value;
+
+  getResults()
+  {
+    onInit();
+  }
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
 
-    //나의 uid, ID Profile을 제외한 다른 유저들을 보는 것.
-    usersProfileList.bindStream(FirebaseFirestore.instance
-        .collection("users")
-        .where("uid", isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()
-        .map((QuerySnapshot queryDataSnapShot) {
-      List<Person> profilesList = [];
+    if(chosenGender == null || chosenCountry == null || chosenAge == null)
+    {
 
-      for (var eachProfile in queryDataSnapShot.docs) {
-        profilesList.add(Person.fromdataSnapshot(eachProfile));
-      }
-      return profilesList;
-    })
-    );
+      usersProfileList.bindStream(
+          FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .snapshots()
+          .map((QuerySnapshot queryDataSnapShot)
+          {
+        List<Person> profilesList = [];
+
+        for (var eachProfile in queryDataSnapShot.docs) {
+          profilesList.add(Person.fromdataSnapshot(eachProfile));
+        }
+        return profilesList;
+      })
+      );
+    }
+    else
+    {
+      usersProfileList.bindStream(FirebaseFirestore
+          .instance
+          .collection("users")
+          .where("gender", isEqualTo: chosenGender.toString().toLowerCase())
+          .where("country", isEqualTo: chosenCountry.toString())
+          .where("age", isGreaterThanOrEqualTo: int.parse(chosenAge.toString()))
+          .snapshots()
+          .map((QuerySnapshot queryDataSnapShot) {
+        List<Person> profilesList = [];
+
+        for (var eachProfile in queryDataSnapShot.docs) {
+          profilesList.add(Person.fromdataSnapshot(eachProfile));
+        }
+        return profilesList;
+      })
+      );
+    }
+    //나의 uid, ID Profile을 제외한 다른 유저들을 보는 것.
+
   }
 
   favoriteSentAndFavoriteRecevied(String toUserID, String senderName) async

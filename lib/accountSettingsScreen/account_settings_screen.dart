@@ -24,6 +24,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   double val = 0;
 
   //Personal info
+  TextEditingController genderTextEditingController = TextEditingController();
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController ageTextEditingController = TextEditingController();
   TextEditingController phoneNoTextEditingController = TextEditingController();
@@ -74,6 +75,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   //personal info
   String name = '';
   String age = '';
+  String gender = '';
   String phoneNo = '';
   String city = '';
   String country = '';
@@ -151,6 +153,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           nameTextEditingController.text = name;
           age = snapshot.data()!['age'].toString();
           ageTextEditingController.text = age;
+          gender = snapshot.data()!['gender'].toString();
+          genderTextEditingController.text = gender;
           phoneNo = snapshot.data()!['phoneNo'];
           phoneNoTextEditingController.text = phoneNo;
           city = snapshot.data()!['city'];
@@ -215,6 +219,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       //personal info
       String name,
       String age,
+      String gender,
       String phoneNo,
       String city,
       String country,
@@ -279,6 +284,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           //personal info
           'name' : name,
           'age' : int.parse(age),
+          'gender' : gender.toLowerCase(),
           'phoneNo' : phoneNo,
           'city' : city,
           'country' : country,
@@ -425,6 +431,22 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         editingController: ageTextEditingController,
                         lableText: "Age",
                         iconData: Icons.numbers,
+                        isObscure: false,
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 24,
+                    ),
+
+                    //gender
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 36,
+                      height: 55,
+                      child: CustomTextFieldWidget(
+                        editingController: genderTextEditingController,
+                        lableText: "Gender",
+                        iconData: Icons.person_pin,
                         isObscure: false,
                       ),
                     ),
@@ -887,6 +909,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               //personal info
                               nameTextEditingController.text.trim().isNotEmpty
                                   && ageTextEditingController.text.trim().isNotEmpty
+                                  && genderTextEditingController.text.trim().isNotEmpty
                                   && phoneNoTextEditingController.text.trim().isNotEmpty
                                   && cityTextEditingController.text.trim()
                                       .isNotEmpty
@@ -970,6 +993,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               //personal info
                               nameTextEditingController.text.trim(),
                               ageTextEditingController.text.trim(),
+                              genderTextEditingController.text.trim(),
                               phoneNoTextEditingController.text.trim(),
                               cityTextEditingController.text.trim(),
                               countryTextEditingController.text.trim(),

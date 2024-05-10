@@ -14,21 +14,22 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-{
+class _HomeScreenState extends State<HomeScreen> {
   int screenIndex = 0;
 
-  List tabScreensList =
-      [
-        SwippingScreen(),
-        ViewSentViewReceivedScreen(),
-        FavoriteSentFavoriteReceivedScreen(),
-        LikeSentLikeReceivedScreen(),
-        UserDetailsScreen(userID: FirebaseAuth.instance.currentUser!.uid,),
+  List tabScreensList = [
+    const SwippingScreen(),
+    const ViewSentViewReceivedScreen(),
+    const FavoriteSentFavoriteReceivedScreen(),
+    LikeSentLikeReceivedScreen(
+      userID: FirebaseAuth.instance.currentUser!.uid, // 사용자 uid 전달
+    ),
+    UserDetailsScreen(
+      userID: FirebaseAuth.instance.currentUser!.uid,
+    ),
+  ];
 
-      ];
-
-    @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -42,8 +43,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (indexNumber)
-        {
+        onTap: (indexNumber) {
           setState(() {
             screenIndex = indexNumber;
           });
@@ -54,15 +54,13 @@ class _HomeScreenState extends State<HomeScreen>
         unselectedItemColor: Colors.white12,
         currentIndex: screenIndex,
         items: const [
-
           //SwippingScreen
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 30,
-            ),
-            label: ""
-          ),
+              icon: Icon(
+                Icons.home,
+                size: 30,
+              ),
+              label: ""),
 
           //ViewSentViewReceived icon button
           BottomNavigationBarItem(
@@ -70,9 +68,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.remove_red_eye,
                 size: 30,
               ),
-              label: ""
-          ),
-
+              label: ""),
 
           //favoriteSentFavoriteReceived icon button
           BottomNavigationBarItem(
@@ -80,8 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.star,
                 size: 30,
               ),
-              label: ""
-          ),
+              label: ""),
 
           //likeSentLikeReceived icon button
           BottomNavigationBarItem(
@@ -89,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.favorite,
                 size: 30,
               ),
-              label: ""
-          ),
+              label: ""),
 
           //userDetailsScreen icon button
           BottomNavigationBarItem(
@@ -98,21 +92,17 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.person,
                 size: 30,
               ),
-              label: ""
-          ),
+              label: ""),
 
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.chat,
                 size: 30,
               ),
-              label: ""
-          ),
-
+              label: ""),
         ],
       ),
       body: tabScreensList[screenIndex],
-
     );
   }
 }

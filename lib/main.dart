@@ -6,23 +6,18 @@ import 'package:vestfriend_123_a3/authenticationScreen/login_screen.dart';
 import 'package:vestfriend_123_a3/controllers/authentication_controller.dart';
 import 'firebase_options.dart';
 
-void main() async
-{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options:DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   {
-
     Get.put(AuthenticationController());
+  }
 
-  };
-
-  await Permission.notification.isDenied.then((value)
-  {
-    if(value)
-    {
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
       Permission.notification.request();
     }
   });
@@ -38,14 +33,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Dating App',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black
-
-      ),
+      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }
-
-

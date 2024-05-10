@@ -182,18 +182,18 @@ class _LikeSentLikeReceivedScreenState
                       color: Colors.blue.shade200,
                       child: GestureDetector(
                         onTap: () {
-                          debugPrint(
-                              '상대 유저 데이터 | $name | ${user["name"]}, ${user["uid"]}, ${user["age"]}, ${user["imageProfile"]} ');
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => ChatScreen(
-                                        uid: user["uid"],
-                                        otherName: user["name"],
-                                        name: name,
-                                        age: user["age"] as int,
-                                        profileImage: user["imageProfile"],
-                                      )));
+                          isLikeSentClicked != true
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ChatScreen(
+                                            uid: user["uid"],
+                                            otherName: user["name"],
+                                            name: name,
+                                            age: user["age"] as int,
+                                            profileImage: user["imageProfile"],
+                                          )))
+                              : ();
                         },
                         child: DecoratedBox(
                           decoration: BoxDecoration(

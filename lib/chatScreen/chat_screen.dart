@@ -80,22 +80,24 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage() {
-    String message = messageController.text.trim();
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
-    String senderId = widget.name;
-    String receiverId = widget.otherName;
+    if (messageController.text.isNotEmpty) {
+      String message = messageController.text.trim();
+      int timestamp = DateTime.now().millisecondsSinceEpoch;
+      String senderId = widget.name;
+      String receiverId = widget.otherName;
 
-    // 메시지 전송
-    roomRef.push().set({
-      "senderId": senderId,
-      "receiverId": receiverId,
-      "message": message,
-      "timestamp": timestamp,
-    }).onError((error, stackTrace) => throw stackTrace);
+      // 메시지 전송
+      roomRef.push().set({
+        "senderId": senderId,
+        "receiverId": receiverId,
+        "message": message,
+        "timestamp": timestamp,
+      }).onError((error, stackTrace) => throw stackTrace);
 
-    scrollController.animateTo(0,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-    messageController.clear();
+      scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      messageController.clear();
+    }
   }
 
   @override
@@ -151,6 +153,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(minHeight: 50),
                       child: TextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                         controller: messageController,
                         style:
                             const TextStyle(color: Colors.black, fontSize: 16),
@@ -169,9 +174,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 IconButton(
                   onPressed: () => sendMessage(),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.send,
-                    color: Colors.blue,
+                    color: messageController.text.isEmpty
+                        ? Colors.grey
+                        : Colors.blue,
                   ),
                 )
               ],

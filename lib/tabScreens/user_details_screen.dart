@@ -70,12 +70,9 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         .collection("users")
         .doc(widget.userID)
         .get()
-        .then((snapshot)
-    {
-      if(snapshot.exists)
-      {
-        if(snapshot.data()!["urlImage1"] != null)
-        {
+        .then((snapshot) {
+      if (snapshot.exists) {
+        if (snapshot.data()!["urlImage1"] != null) {
           setState(() {
             urlImage1 = snapshot.data()!["urlImage1"];
             urlImage2 = snapshot.data()!["urlImage2"];
@@ -145,40 +142,44 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         centerTitle: true,
         //수동으로 뒤로가기버튼 on/off 코드임 아래.
         //automaticallyImplyLeading: widget.userID == currentUserID ? false : true,
-        leading : widget.userID != currentUserID ? IconButton(
-          onPressed: ()
-          {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_outlined, size: 30,),
-        ) : Container(),
+        leading: widget.userID != currentUserID
+            ? IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.arrow_back_outlined,
+                  size: 30,
+                ),
+              )
+            : Container(),
         actions: [
           Row(
             children: [
-              widget.userID == currentUserID ?
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: ()
-                    {
-                     Get.to(AccountSettingsScreen());
-                    },
-                    icon: const Icon(
-                      Icons.settings,
-                      size: 30,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ) : Container(),
+              widget.userID == currentUserID
+                  ? Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Get.to(const AccountSettingsScreen());
+                          },
+                          icon: const Icon(
+                            Icons.settings,
+                            size: 30,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                          },
+                          icon: const Icon(
+                            Icons.logout,
+                            size: 30,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
             ],
           ),
         ],
@@ -525,7 +526,9 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               ),
 
               //Life Style title
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
